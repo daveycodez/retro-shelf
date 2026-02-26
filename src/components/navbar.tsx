@@ -1,5 +1,6 @@
-import { Gear } from "@gravity-ui/icons"
+import { Gear, Magnifier } from "@gravity-ui/icons"
 import {
+	Button,
 	Disclosure,
 	DisclosureGroup,
 	Label,
@@ -66,7 +67,7 @@ export default function NavBar() {
 	const groups = systems ? groupByBrand(systems) : []
 
 	return (
-		<nav className="flex w-64 shrink-0 flex-col border-r border-border bg-surface sticky top-0 h-screen">
+		<nav className="flex w-64 lg:w-72 xl:w-80 flex-col border-r border-border bg-surface h-svh fixed top-0">
 			<div className="flex items-center gap-2 px-4 py-5">
 				<Link
 					to="/"
@@ -89,7 +90,7 @@ export default function NavBar() {
 
 			<Separator />
 
-			<ScrollShadow className="flex-1 min-h-0 py-5" hideScrollBar>
+			<ScrollShadow className="flex-1 min-h-0 py-4" hideScrollBar>
 				{isPending ? (
 					<div className="flex flex-col gap-3 p-3">
 						<Skeleton className="h-5 w-24 rounded-md" />
@@ -101,49 +102,61 @@ export default function NavBar() {
 						<Skeleton className="h-8 w-full rounded-lg" />
 					</div>
 				) : groups.length > 0 ? (
-					<DisclosureGroup
-						allowsMultipleExpanded
-						defaultExpandedKeys={groups.map((g) => g.brand)}
-						className="flex flex-col"
-					>
-						{groups.map((group) => (
-							<Disclosure key={group.brand} id={group.brand}>
-								<Disclosure.Heading>
-									<Disclosure.Trigger className="flex w-full items-center justify-between px-3 text-xs font-semibold uppercase tracking-wider text-muted hover:text-foreground transition-colors">
-										{group.brand}
-										<Disclosure.Indicator className="text-muted" />
-									</Disclosure.Trigger>
-								</Disclosure.Heading>
-								<Disclosure.Content>
-									<Disclosure.Body>
-										<ListBox
-											aria-label={`${group.brand} consoles`}
-											className="w-full"
-											selectionMode="none"
-										>
-											{group.consoles.map((console) => (
-												<ListBox.Item
-													key={console.id}
-													id={`console-${console.id}`}
-													textValue={console.name}
-													href="#"
-												>
-													<img
-														src={console.iconUrl}
-														alt=""
-														className="size-5 shrink-0 object-contain"
-													/>
-													<Label className="truncate">
-														{console.name.split("/")[0].trim()}
-													</Label>
-												</ListBox.Item>
-											))}
-										</ListBox>
-									</Disclosure.Body>
-								</Disclosure.Content>
-							</Disclosure>
-						))}
-					</DisclosureGroup>
+					<>
+						<div className="px-3">
+							<Button
+								className="mb-4 w-full justify-between"
+								variant="secondary"
+							>
+								Search
+								<Magnifier />
+							</Button>
+						</div>
+
+						<DisclosureGroup
+							allowsMultipleExpanded
+							defaultExpandedKeys={groups.map((g) => g.brand)}
+							className="flex flex-col"
+						>
+							{groups.map((group) => (
+								<Disclosure key={group.brand} id={group.brand}>
+									<Disclosure.Heading>
+										<Disclosure.Trigger className="flex w-full items-center justify-between px-3 text-xs font-semibold uppercase tracking-wider text-muted hover:text-foreground transition-colors">
+											{group.brand}
+											<Disclosure.Indicator className="text-muted" />
+										</Disclosure.Trigger>
+									</Disclosure.Heading>
+									<Disclosure.Content>
+										<Disclosure.Body>
+											<ListBox
+												aria-label={`${group.brand} consoles`}
+												className="w-full"
+												selectionMode="none"
+											>
+												{group.consoles.map((console) => (
+													<ListBox.Item
+														key={console.id}
+														id={`console-${console.id}`}
+														textValue={console.name}
+														href="#"
+													>
+														<img
+															src={console.iconUrl}
+															alt=""
+															className="size-5 shrink-0 object-contain"
+														/>
+														<Label className="truncate">
+															{console.name.split("/")[0].trim()}
+														</Label>
+													</ListBox.Item>
+												))}
+											</ListBox>
+										</Disclosure.Body>
+									</Disclosure.Content>
+								</Disclosure>
+							))}
+						</DisclosureGroup>
+					</>
 				) : (
 					<p className="px-3 py-4 text-sm text-muted">No consoles available.</p>
 				)}

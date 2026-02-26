@@ -9,7 +9,7 @@ export const $settings = createStore({
 
 export const useSettings = () => useStore($settings, (state) => state)
 
-export const setSettings = (settings: typeof $settings.state) => {
+export const setSettings = (settings: Partial<typeof $settings.state>) => {
 	$settings.setState((state) => ({
 		...state,
 		...settings,
@@ -18,10 +18,8 @@ export const setSettings = (settings: typeof $settings.state) => {
 
 export const useSettingsPersister = () => {
 	useEffect(() => {
-		const settings = localStorage.getItem("settings")
-		if (settings) {
-			$settings.setState(JSON.parse(settings))
-		}
+		const saved = localStorage.getItem("settings")
+		setSettings(saved ? JSON.parse(saved) : {})
 
 		$settings.subscribe((state) => {
 			localStorage.setItem("settings", JSON.stringify(state))

@@ -49,10 +49,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 
 			<body>
 				<Providers>
-					<div className="flex min-h-screen items-start">
+					<div>
 						<NavBar />
 
-						{children}
+						<main className="ml-64 lg:ml-72 xl:ml-80">{children}</main>
 					</div>
 
 					<TanStackDevtools

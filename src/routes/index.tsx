@@ -1,7 +1,7 @@
 import { Card, Chip, Spinner } from "@heroui/react"
 import { getGameList } from "@retroachievements/api"
 import { skipToken, useQuery } from "@tanstack/react-query"
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute, useHydrated } from "@tanstack/react-router"
 import { useEffect } from "react"
 import { useAuthorization } from "@/hooks/use-authorization"
 
@@ -22,13 +22,18 @@ export const Route = createFileRoute("/")({ component: App })
 
 function App() {
 	const authorization = useAuthorization()
+	const hydrated = useHydrated()
 
 	const consoleId = 1
 
 	const { data, isPending } = useQuery({
 		queryKey: ["gameList", consoleId],
 		queryFn: authorization
-			? () => getGameList(authorization, { consoleId })
+			? () =>
+					getGameList(authorization, {
+						consoleId,
+						shouldOnlyRetrieveGamesWithAchievements: true,
+					})
 			: skipToken,
 		staleTime: Infinity,
 	})
@@ -42,7 +47,7 @@ function App() {
 		(game) => game.tags.length === 0 && !game.title.includes("[Subset -"),
 	)
 
-	if (!authorization) {
+	if (!authorization && hydrated) {
 		return (
 			<div className="flex flex-col items-center justify-center gap-4 py-24 text-center">
 				<p className="text-lg text-muted">

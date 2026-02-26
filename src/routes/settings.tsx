@@ -1,5 +1,13 @@
-import { FloppyDisk } from "@gravity-ui/icons"
-import { Button, Card, Form, Input, Label, TextField } from "@heroui/react"
+import { Eye, EyeSlash, FloppyDisk } from "@gravity-ui/icons"
+import {
+	Button,
+	Card,
+	Form,
+	Input,
+	InputGroup,
+	Label,
+	TextField,
+} from "@heroui/react"
 import { createFileRoute, useHydrated } from "@tanstack/react-router"
 import { useStore } from "@tanstack/react-store"
 import { type FormEvent, useState } from "react"
@@ -12,6 +20,7 @@ export const Route = createFileRoute("/settings")({
 function Settings() {
 	const settings = useStore($settings, (state) => state)
 	const [isDirty, setIsDirty] = useState(false)
+	const [isApiKeyVisible, setIsApiKeyVisible] = useState(false)
 	const hydrated = useHydrated()
 
 	function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -29,7 +38,7 @@ function Settings() {
 	}
 
 	return (
-		<div className="min-h-screen max-w-2xl mx-auto p-8">
+		<div className="p-6">
 			<h1 className="text-2xl font-bold mb-8">Settings</h1>
 
 			<Card className="md:p-6">
@@ -47,7 +56,6 @@ function Settings() {
 						<TextField
 							fullWidth
 							key="ra-username"
-							variant="secondary"
 							name="ra-username"
 							defaultValue={settings.raUsername}
 							onChange={() => setIsDirty(true)}
@@ -55,13 +63,15 @@ function Settings() {
 						>
 							<Label>Username</Label>
 
-							<Input placeholder="Your RetroAchievements username" />
+							<Input
+								variant="secondary"
+								placeholder="Your RetroAchievements username"
+							/>
 						</TextField>
 
 						<TextField
 							fullWidth
 							key="ra-api-key"
-							variant="secondary"
 							name="ra-api-key"
 							defaultValue={settings.raApiKey}
 							onChange={() => setIsDirty(true)}
@@ -69,10 +79,30 @@ function Settings() {
 						>
 							<Label>API Key</Label>
 
-							<Input
-								placeholder="Your RetroAchievements API key"
-								type="password"
-							/>
+							<InputGroup fullWidth variant="secondary">
+								<InputGroup.Input
+									placeholder="Your RetroAchievements API key"
+									type={isApiKeyVisible ? "text" : "password"}
+								/>
+
+								<InputGroup.Suffix className="pr-1">
+									<Button
+										isIconOnly
+										aria-label={
+											isApiKeyVisible ? "Hide API key" : "Show API key"
+										}
+										size="sm"
+										variant="ghost"
+										onPress={() => setIsApiKeyVisible(!isApiKeyVisible)}
+									>
+										{isApiKeyVisible ? (
+											<Eye className="size-4" />
+										) : (
+											<EyeSlash className="size-4" />
+										)}
+									</Button>
+								</InputGroup.Suffix>
+							</InputGroup>
 						</TextField>
 
 						<Button
