@@ -7,6 +7,7 @@ import {
 	Scripts,
 } from "@tanstack/react-router"
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
+
 import Header from "../components/header"
 import Providers from "../components/providers"
 import appCss from "../styles.css?url"

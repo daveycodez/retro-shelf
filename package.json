@@ -28,12 +28,15 @@
     "@tanstack/react-router-devtools": "^1.132.0",
     "@tanstack/react-router-ssr-query": "^1.131.7",
     "@tanstack/react-start": "^1.132.0",
+    "@tanstack/react-store": "^0.9.1",
     "@tanstack/router-plugin": "^1.132.0",
+    "@tanstack/store": "^0.9.1",
     "better-themes": "^1.1.0",
     "lucide-react": "^0.575.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "tailwindcss": "^4.1.18"
+    "tailwindcss": "^4.1.18",
+    "usehooks-ts": "^3.1.1"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.4",
