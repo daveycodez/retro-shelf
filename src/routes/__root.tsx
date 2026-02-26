@@ -8,9 +8,9 @@ import {
 } from "@tanstack/react-router"
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
 
-import Header from "../components/header"
+import NavBar from "../components/navbar"
 import Providers from "../components/providers"
-import appCss from "../styles.css?url"
+import appCss from "../styles/styles.css?url"
 
 interface MyRouterContext {
 	queryClient: QueryClient
@@ -49,9 +49,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 
 			<body>
 				<Providers>
-					<Header />
+					<div className="flex min-h-screen items-start">
+						<NavBar />
 
-					{children}
+						{children}
+					</div>
 
 					<TanStackDevtools
 						config={{
