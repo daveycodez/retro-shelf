@@ -228,7 +228,7 @@ function Settings() {
 
 					<div className="flex flex-col gap-3">
 						{brandPlatforms.map((platform) => (
-							<Card key={platform.id}>
+							<Card key={platform.id} className="gap-0">
 								<Card.Header className="flex flex-row justify-between items-center">
 									<div
 										className={`bg-default flex items-center p-4 relative aspect-1920/620 w-48 rounded-2xl overflow-hidden`}
@@ -260,7 +260,7 @@ function Settings() {
 
 								<Disclosure isExpanded={platformSettings[platform.id]?.enabled}>
 									<Disclosure.Content>
-										<Disclosure.Body>
+										<Disclosure.Body className="mt-2">
 											<Form
 												onSubmit={(e) => handlePlatformSubmit(platform.id, e)}
 												className="flex flex-col gap-4"

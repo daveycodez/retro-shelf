@@ -34,5 +34,12 @@
 		"fullName": "Sony PlayStation 2",
 		"brand": "Sony",
 		"hero": "https://cdn2.steamgriddb.com/hero_thumb/1553773a09c13add30068d584a4e14f3.jpg"
+	},
+	{
+		"id": "psp",
+		"name": "PSP",
+		"fullName": "Sony PlayStation Portable",
+		"brand": "Sony",
+		"hero": "https://cdn2.steamgriddb.com/hero_thumb/1553773a09c13add30068d584a4e14f3.jpg"
 	}
 ]
