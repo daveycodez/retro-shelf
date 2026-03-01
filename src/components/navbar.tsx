@@ -2,69 +2,32 @@ import { Gear, Magnifier } from "@gravity-ui/icons"
 import {
 	Button,
 	Disclosure,
-	DisclosureGroup,
 	Label,
 	ListBox,
 	ScrollShadow,
 	Separator,
-	Skeleton,
 } from "@heroui/react"
-import type { getConsoleIds } from "@retroachievements/api"
-import { getConsoleIds as fetchConsoleIds } from "@retroachievements/api"
-import { skipToken, useQuery } from "@tanstack/react-query"
 import { Link } from "@tanstack/react-router"
-import consoleBrands from "@/data/console-brands.json"
-import { useAuthorization } from "@/hooks/use-authorization"
-
-type Console = Awaited<ReturnType<typeof getConsoleIds>>[number]
-
-function groupByBrand(systems: Console[]) {
-	const idToConsole = new Map(systems.map((c) => [c.id, c]))
-	const groups: { brand: string; consoles: Console[] }[] = []
-	const assigned = new Set<number>()
-
-	for (const { brand, consoleIds } of consoleBrands) {
-		const consoles: Console[] = []
-		for (const id of consoleIds) {
-			const c = idToConsole.get(id)
-			if (c) consoles.push(c)
-		}
-		if (consoles.length > 0) {
-			groups.push({ brand, consoles })
-			for (const c of consoles) assigned.add(c.id)
-		}
-	}
-
-	const uncategorized = systems.filter((c) => !assigned.has(c.id))
-	if (uncategorized.length > 0) {
-		const others = groups.find((g) => g.brand === "Others")
-		if (others) {
-			others.consoles.push(...uncategorized)
-		} else {
-			groups.push({ brand: "Others", consoles: uncategorized })
-		}
-	}
-
-	return groups
-}
+import { useMemo } from "react"
+import platforms from "@/data/platforms.json"
+import { useSettings } from "@/lib/settings"
 
 export default function NavBar() {
-	const authorization = useAuthorization()
+	const { platformSettings } = useSettings()
 
-	const { data: consoleIds, isPending } = useQuery({
-		queryKey: ["consoleIds"],
-		queryFn: authorization
-			? () =>
-					fetchConsoleIds(authorization, {
-						shouldOnlyRetrieveGameSystems: true,
-						shouldOnlyRetrieveActiveSystems: true,
-					})
-			: skipToken,
-		staleTime: Infinity,
-	})
+	const enabledGroups = useMemo(() => {
+		const enabledPlatforms = platforms.filter(
+			(p) => platformSettings[p.id]?.enabled,
+		)
 
-	const systems = consoleIds?.filter((c) => c.active && c.isGameSystem)
-	const groups = systems ? groupByBrand(systems) : []
+		const grouped: Record<string, typeof platforms> = {}
+		for (const platform of enabledPlatforms) {
+			if (!grouped[platform.brand]) grouped[platform.brand] = []
+			grouped[platform.brand].push(platform)
+		}
+
+		return Object.entries(grouped).map(([brand, items]) => ({ brand, platforms: items }))
+	}, [platformSettings])
 
 	return (
 		<nav className="flex w-64 lg:w-80 xl:w-96 flex-col border-r border-border bg-surface h-svh fixed top-0">
@@ -91,17 +54,7 @@ export default function NavBar() {
 			<Separator />
 
 			<ScrollShadow className="flex-1 min-h-0 py-4" hideScrollBar>
-				{isPending ? (
-					<div className="flex flex-col gap-3 p-3">
-						<Skeleton className="h-5 w-24 rounded-md" />
-						<Skeleton className="h-8 w-full rounded-lg" />
-						<Skeleton className="h-8 w-full rounded-lg" />
-						<Skeleton className="h-8 w-full rounded-lg" />
-						<Skeleton className="h-5 w-20 rounded-md" />
-						<Skeleton className="h-8 w-full rounded-lg" />
-						<Skeleton className="h-8 w-full rounded-lg" />
-					</div>
-				) : groups.length > 0 ? (
+				{enabledGroups.length > 0 ? (
 					<>
 						<div className="px-3">
 							<Button
@@ -113,52 +66,43 @@ export default function NavBar() {
 							</Button>
 						</div>
 
-						<DisclosureGroup
-							allowsMultipleExpanded
-							defaultExpandedKeys={groups.map((g) => g.brand)}
-							className="flex flex-col"
-						>
-							{groups.map((group) => (
-								<Disclosure key={group.brand} id={group.brand}>
-									<Disclosure.Heading>
-										<Disclosure.Trigger className="flex w-full items-center justify-between px-3 text-xs font-semibold uppercase tracking-wider text-muted hover:text-foreground transition-colors">
-											{group.brand}
-											<Disclosure.Indicator className="text-muted" />
-										</Disclosure.Trigger>
-									</Disclosure.Heading>
-									<Disclosure.Content>
-										<Disclosure.Body>
-											<ListBox
-												aria-label={`${group.brand} consoles`}
-												className="w-full"
-												selectionMode="none"
-											>
-												{group.consoles.map((console) => (
-													<ListBox.Item
-														key={console.id}
-														id={`console-${console.id}`}
-														textValue={console.name}
-														href="#"
-													>
-														<img
-															src={console.iconUrl}
-															alt=""
-															className="size-5 shrink-0 object-contain"
-														/>
-														<Label className="truncate">
-															{console.name.split("/")[0].trim()}
-														</Label>
-													</ListBox.Item>
-												))}
-											</ListBox>
-										</Disclosure.Body>
-									</Disclosure.Content>
-								</Disclosure>
-							))}
-						</DisclosureGroup>
+						{enabledGroups.map((group) => (
+							<Disclosure key={group.brand} defaultExpanded>
+								<Disclosure.Heading>
+									<Disclosure.Trigger className="flex w-full items-center justify-between px-3 text-xs font-semibold uppercase tracking-wider text-muted hover:text-foreground transition-colors">
+										{group.brand}
+										<Disclosure.Indicator className="text-muted" />
+									</Disclosure.Trigger>
+								</Disclosure.Heading>
+								<Disclosure.Content>
+									<Disclosure.Body>
+										<ListBox
+											aria-label={`${group.brand} consoles`}
+											className="w-full"
+											selectionMode="none"
+										>
+											{group.platforms.map((platform) => (
+												<ListBox.Item
+													key={platform.id}
+													id={`console-${platform.id}`}
+													textValue={platform.name}
+													href={`/${platform.id}`}
+												>
+													<Label className="truncate">
+														{platform.name}
+													</Label>
+												</ListBox.Item>
+											))}
+										</ListBox>
+									</Disclosure.Body>
+								</Disclosure.Content>
+							</Disclosure>
+						))}
 					</>
 				) : (
-					<p className="px-3 py-4 text-sm text-muted">No consoles available.</p>
+					<p className="px-3 py-4 text-sm text-muted">
+						No platforms enabled. Enable platforms in Settings.
+					</p>
 				)}
 			</ScrollShadow>
 
