@@ -8,17 +8,17 @@ import { defineConfig } from "vite"
 import tsconfigPaths from "vite-tsconfig-paths"
 
 const config = defineConfig({
-	resolve: {
-		noExternal: ["@gravity-ui/icons"],
-	},
-	plugins: [
-		devtools(),
-		cloudflare({ viteEnvironment: { name: "ssr" } }),
-		tsconfigPaths({ projects: ["./tsconfig.json"] }),
-		tailwindcss(),
-		tanstackStart(),
-		viteReact(),
-	],
+  resolve: {
+    noExternal: ["@gravity-ui/icons"],
+  },
+  plugins: [
+    devtools(),
+    cloudflare({ viteEnvironment: { name: "ssr" } }),
+    tsconfigPaths({ projects: ["./tsconfig.json"] }),
+    tailwindcss(),
+    tanstackStart(),
+    viteReact(),
+  ],
 })
 
 export default config

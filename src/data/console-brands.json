@@ -1,30 +1,33 @@
 [
-	{
-		"brand": "Nintendo",
-		"consoleIds": [4, 6, 5, 7, 3, 2, 16, 18, 78, 24, 28]
-	},
-	{
-		"brand": "Sony",
-		"consoleIds": [12, 21, 41]
-	},
-	{
-		"brand": "Sega",
-		"consoleIds": [33, 11, 15, 1, 9, 10, 39, 40]
-	},
-	{
-		"brand": "Atari",
-		"consoleIds": [25, 51, 17, 77, 13]
-	},
-	{
-		"brand": "NEC",
-		"consoleIds": [8, 76, 47, 49]
-	},
-	{
-		"brand": "SNK",
-		"consoleIds": [56, 14]
-	},
-	{
-		"brand": "Others",
-		"consoleIds": [43, 37, 38, 27, 73, 71, 44, 75, 57, 45, 74, 23, 69, 29, 102, 80, 46, 72, 63, 53]
-	}
+  {
+    "brand": "Nintendo",
+    "consoleIds": [4, 6, 5, 7, 3, 2, 16, 18, 78, 24, 28]
+  },
+  {
+    "brand": "Sony",
+    "consoleIds": [12, 21, 41]
+  },
+  {
+    "brand": "Sega",
+    "consoleIds": [33, 11, 15, 1, 9, 10, 39, 40]
+  },
+  {
+    "brand": "Atari",
+    "consoleIds": [25, 51, 17, 77, 13]
+  },
+  {
+    "brand": "NEC",
+    "consoleIds": [8, 76, 47, 49]
+  },
+  {
+    "brand": "SNK",
+    "consoleIds": [56, 14]
+  },
+  {
+    "brand": "Others",
+    "consoleIds": [
+      43, 37, 38, 27, 73, 71, 44, 75, 57, 45, 74, 23, 69, 29, 102, 80, 46, 72,
+      63, 53
+    ]
+  }
 ]
