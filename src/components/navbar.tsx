@@ -67,7 +67,7 @@ export default function NavBar() {
 	const groups = systems ? groupByBrand(systems) : []
 
 	return (
-		<nav className="flex w-64 lg:w-72 xl:w-80 flex-col border-r border-border bg-surface h-svh fixed top-0">
+		<nav className="flex w-64 lg:w-80 xl:w-96 flex-col border-r border-border bg-surface h-svh fixed top-0">
 			<div className="flex items-center gap-2 px-4 py-5">
 				<Link
 					to="/"
@@ -165,16 +165,10 @@ export default function NavBar() {
 			<Separator />
 
 			<div className="p-2">
-				<ListBox
-					aria-label="Navigation"
-					className="w-full"
-					selectionMode="none"
-				>
-					<ListBox.Item id="settings" textValue="Settings" href="/settings">
-						<Gear className="size-4 shrink-0 text-muted" />
-						<Label>Settings</Label>
-					</ListBox.Item>
-				</ListBox>
+				<Link to="/settings" className="flex items-center gap-2">
+					<Gear className="size-4 shrink-0 text-muted" />
+					<Label>Settings</Label>
+				</Link>
 			</div>
 		</nav>
 	)

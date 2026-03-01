@@ -1,0 +1,60 @@
+[
+	{
+		"id": "nes",
+		"name": "Nintendo Entertainment System",
+		"shortName": "NES",
+		"brand": "Nintendo",
+		"folderNames": [
+			"nes",
+			"famicom",
+			"NES",
+			"FAMICOM",
+			"Nintendo Entertainment System",
+			"Nintendo - Nintendo Entertainment System",
+			"Nintendo - NES",
+			"Nintendo - Famicom",
+			"Nintendo - Nintendo Entertainment System (Headered)",
+			"RA - Nintendo Entertainment System"
+		]
+	},
+	{
+		"id": "gb",
+		"name": "Game Boy",
+		"shortName": "GB",
+		"brand": "Nintendo",
+		"folderNames": [
+			"gb",
+			"GB",
+			"Game Boy",
+			"Nintendo - Game Boy",
+			"RA - Nintendo Game Boy"
+		]
+	},
+	{
+		"id": "nds",
+		"name": "Nintendo DS",
+		"shortName": "DS",
+		"brand": "Nintendo",
+		"folderNames": [
+			"nds",
+			"ds",
+			"NDS",
+			"DS",
+			"Nintendo DS",
+			"Nintendo - Nintendo DS (Decrypted)",
+			"RA - Nintendo DS"
+		]
+	},
+	{
+		"id": "psx",
+		"name": "PlayStation",
+		"shortName": "PSX",
+		"brand": "Sony"
+	},
+	{
+		"id": "ps2",
+		"name": "PlayStation 2",
+		"shortName": "PS2",
+		"brand": "Sony"
+	}
+]

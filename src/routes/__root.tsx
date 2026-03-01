@@ -52,7 +52,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 					<div>
 						<NavBar />
 
-						<main className="ml-64 lg:ml-72 xl:ml-80">{children}</main>
+						<main className="ml-64 lg:ml-80 xl:ml-96">{children}</main>
 					</div>
 
 					<TanStackDevtools
