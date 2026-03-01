@@ -7,6 +7,7 @@ import {
 	Input,
 	InputGroup,
 	Label,
+	Separator,
 	Switch,
 	TextField,
 } from "@heroui/react"
@@ -72,8 +73,10 @@ function Settings() {
 	}
 
 	return (
-		<div className="p-6">
-			<h1 className="text-2xl font-bold mb-8">Settings</h1>
+		<div className="flex flex-col px-6 py-4 gap-4">
+			<h1 className="text-lg font-bold">Settings</h1>
+
+			<Separator />
 
 			<Card className="md:p-6">
 				<Card.Header className="gap-1">
@@ -151,7 +154,7 @@ function Settings() {
 				</Card.Content>
 			</Card>
 
-			<Card className="md:p-6 mt-6">
+			<Card className="md:p-6">
 				<Card.Header className="gap-1">
 					<Card.Title className="text-lg">SteamGridDB</Card.Title>
 
@@ -211,7 +214,7 @@ function Settings() {
 				</Card.Content>
 			</Card>
 
-			<h2 className="text-2xl font-semibold mt-8 mb-4">Platforms</h2>
+			<h2 className="text-lg font-semibold">Platforms</h2>
 
 			{Object.entries(
 				platforms.reduce<Record<string, typeof platforms>>(
@@ -223,7 +226,7 @@ function Settings() {
 					{},
 				),
 			).map(([brand, brandPlatforms]) => (
-				<div key={brand} className="mb-6">
+				<div key={brand}>
 					<h3 className="text-lg font-semibold mb-3">{brand}</h3>
 
 					<div className="flex flex-col gap-3">

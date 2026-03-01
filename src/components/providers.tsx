@@ -6,11 +6,11 @@ import { useSettingsPersister } from "@/lib/settings"
 export const queryClient = new QueryClient()
 
 export default function Providers({ children }: { children: ReactNode }) {
-	useSettingsPersister()
+  useSettingsPersister()
 
-	return (
-		<ThemeProvider defaultTheme="dark">
-			<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-		</ThemeProvider>
-	)
+  return (
+    <ThemeProvider defaultTheme="dark">
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    </ThemeProvider>
+  )
 }
