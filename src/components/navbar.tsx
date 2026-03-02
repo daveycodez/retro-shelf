@@ -1,15 +1,10 @@
 import { Gear, Magnifier } from "@gravity-ui/icons"
-import {
-  Button,
-  buttonVariants,
-  cn,
-  Disclosure,
-  ScrollShadow,
-} from "@heroui/react"
+import { Button, cn, Disclosure, ScrollShadow } from "@heroui/react"
 import { Link, useParams } from "@tanstack/react-router"
 import { useMemo } from "react"
 import platforms from "@/data/platforms.json"
 import { useSettings } from "@/lib/settings"
+import { ModeToggle } from "./mode-toggle"
 
 export default function NavBar() {
   const { platformSettings } = useSettings()
@@ -33,16 +28,16 @@ export default function NavBar() {
   }, [platformSettings])
 
   return (
-    <nav className="flex w-64 lg:w-80 xl:w-96 flex-col bg-accent text-accent-foreground h-svh fixed top-0">
-      <div className="flex items-center gap-2 p-4">
+    <nav className="flex w-64 lg:w-80 xl:w-88 flex-col bg-accent-soft h-svh fixed top-0">
+      <div className="flex items-center px-4 pt-4">
         <Link
           to="/"
-          className="text-lg font-bold tracking-tight flex gap-2.5 items-center"
+          className="link p-1 -m-1 no-underline outline-none focus-visible:ring-2 ring-accent ring-offset-2 ring--shadow-0 ring-offset-background text-lg font-bold tracking-tight flex gap-2.5 items-center"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
-            className="size-6 text-accent-foreground"
+            className="size-6 text-accent"
           >
             <title>RetroShelf</title>
             <path
@@ -54,27 +49,23 @@ export default function NavBar() {
         </Link>
       </div>
 
-      <ScrollShadow className="flex-1" hideScrollBar>
+      <ScrollShadow className="flex-1 p-4" hideScrollBar>
         {enabledGroups.length > 0 ? (
           <>
-            <div className="px-3">
-              <Button
-                className="mb-4 w-full justify-between"
-                variant="secondary"
-              >
-                Search
-                <Magnifier />
-              </Button>
-            </div>
+            <Button className="mb-4 w-full justify-between" variant="tertiary">
+              Search
+              <Magnifier />
+            </Button>
 
             {enabledGroups.map((group) => (
               <Disclosure key={group.brand} defaultExpanded>
                 <Disclosure.Heading>
-                  <Disclosure.Trigger className="flex w-full items-center justify-between px-3 text-xs font-semibold uppercase tracking-wider transition-colors text-accent-foreground/60">
+                  <Disclosure.Trigger className="w-full p-1 -mx-1 flex text-xs rounded-lg font-semibold uppercase tracking-wider text-accent-soft-foreground">
                     {group.brand}
                     <Disclosure.Indicator />
                   </Disclosure.Trigger>
                 </Disclosure.Heading>
+
                 <Disclosure.Content>
                   <Disclosure.Body className="flex flex-col">
                     {group.platforms.map((platform) => (
@@ -83,11 +74,11 @@ export default function NavBar() {
                         to="/$platformId"
                         params={{ platformId: platform.id }}
                         className={cn(
-                          buttonVariants({
-                            variant: "primary",
-                          }),
+                          "button button--ghost focus-visible:ring-2 ring-accent ring-offset-2 ring-offset-background",
+                          platformId === platform.id
+                            ? "text-foreground"
+                            : "text-muted",
                           "w-full justify-start truncate",
-                          platformId === platform.id && "bg-accent-hover",
                         )}
                       >
                         {platform.name}
@@ -105,11 +96,16 @@ export default function NavBar() {
         )}
       </ScrollShadow>
 
-      <div className="p-2">
-        <Link to="/settings" className={buttonVariants({ variant: "ghost" })}>
+      <div className="flex items-center justify-between p-2">
+        <Link
+          to="/settings"
+          className="button button--ghost focus-visible:ring-2 ring-accent ring-offset-2 ring-offset-background"
+        >
           <Gear className="text-muted" />
           Settings
         </Link>
+
+        <ModeToggle />
       </div>
     </nav>
   )

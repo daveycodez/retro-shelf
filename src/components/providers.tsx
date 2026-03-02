@@ -9,7 +9,7 @@ export default function Providers({ children }: { children: ReactNode }) {
   useSettingsPersister()
 
   return (
-    <ThemeProvider defaultTheme="dark">
+    <ThemeProvider defaultTheme="dark" disableTransitionOnChange>
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </ThemeProvider>
   )

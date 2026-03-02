@@ -1,12 +1,9 @@
-import { TanStackDevtools } from "@tanstack/react-devtools"
 import type { QueryClient } from "@tanstack/react-query"
-import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools"
 import {
   createRootRouteWithContext,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router"
-import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
 
 import NavBar from "../components/navbar"
 import Providers from "../components/providers"
@@ -52,24 +49,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           <div>
             <NavBar />
 
-            <main className="ml-64 lg:ml-80 xl:ml-96">{children}</main>
+            <main className="ml-64 lg:ml-80 xl:ml-88">{children}</main>
           </div>
-
-          <TanStackDevtools
-            config={{
-              position: "bottom-right",
-            }}
-            plugins={[
-              {
-                name: "Tanstack Router",
-                render: <TanStackRouterDevtoolsPanel />,
-              },
-              {
-                name: "Tanstack Query",
-                render: <ReactQueryDevtoolsPanel />,
-              },
-            ]}
-          />
         </Providers>
 
         <Scripts />
