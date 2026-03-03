@@ -71,7 +71,7 @@ export default function NavBar() {
                 </Disclosure.Heading>
 
                 <Disclosure.Content>
-                  <Disclosure.Body className="flex flex-col px-1 group">
+                  <Disclosure.Body className="flex flex-col px-1">
                     {group.platforms.map((platform) => (
                       <Link
                         key={platform.id}
