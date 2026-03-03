@@ -231,7 +231,7 @@ function Settings() {
               <Card key={platform.id} className="gap-0">
                 <Card.Header className="flex flex-row justify-between items-center">
                   <div
-                    className={`bg-default flex items-center p-4 relative aspect-1920/620 w-48 rounded-2xl overflow-hidden`}
+                    className={`bg-default shadow flex items-center p-4 relative aspect-1920/620 w-48 rounded-2xl overflow-hidden`}
                   >
                     <img
                       src={platform.hero}

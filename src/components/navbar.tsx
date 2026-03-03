@@ -32,7 +32,7 @@ export default function NavBar() {
       <div className="flex items-center px-4 pt-4">
         <Link
           to="/"
-          className="link p-1 -m-1 no-underline outline-none focus-visible:ring-2 ring-accent ring-offset-2 ring--shadow-0 ring-offset-background text-lg font-bold tracking-tight flex gap-2.5 items-center"
+          className="link p-1 -m-1 no-underline focus-visible:status-focused text-lg font-bold gap-2.5 items-center"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -71,7 +71,7 @@ export default function NavBar() {
                 </Disclosure.Heading>
 
                 <Disclosure.Content>
-                  <Disclosure.Body className="flex flex-col px-1">
+                  <Disclosure.Body className="flex flex-col px-1 group">
                     {group.platforms.map((platform) => (
                       <Link
                         key={platform.id}
