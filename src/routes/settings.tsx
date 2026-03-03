@@ -7,7 +7,6 @@ import {
   Input,
   InputGroup,
   Label,
-  Separator,
   Switch,
   TextField,
 } from "@heroui/react"
@@ -73,10 +72,8 @@ function Settings() {
   }
 
   return (
-    <div className="flex flex-col px-6 py-4 gap-4">
-      <h1 className="text-lg font-bold">Settings</h1>
-
-      <Separator />
+    <div className="flex flex-col p-4 md:p-6 gap-4 md:gap-6">
+      <h1 className="text-xl md:text-2xl font-bold">Settings</h1>
 
       <Card className="md:p-6">
         <Card.Header className="gap-1">
@@ -241,9 +238,9 @@ function Settings() {
                       alt={platform.name}
                       className="absolute inset-0 size-full"
                     />
-                    <div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent to-50%"></div>
+                    <div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent"></div>
 
-                    <span className="z-10 font-medium text-shadow-md text-white text-shadow-black">
+                    <span className="z-10 font-medium text-shadow-sm text-white text-shadow-black">
                       {platform.name}
                     </span>
                   </div>

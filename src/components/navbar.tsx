@@ -49,36 +49,40 @@ export default function NavBar() {
         </Link>
       </div>
 
-      <ScrollShadow className="flex-1 p-4" hideScrollBar>
+      <ScrollShadow className="flex-1" hideScrollBar>
         {enabledGroups.length > 0 ? (
           <>
-            <Button className="mb-4 w-full justify-between" variant="tertiary">
-              Search
-              <Magnifier />
-            </Button>
+            <div className="p-4">
+              <Button className="w-full justify-between" variant="tertiary">
+                Search
+                <Magnifier />
+              </Button>
+            </div>
 
             {enabledGroups.map((group) => (
               <Disclosure key={group.brand} defaultExpanded>
                 <Disclosure.Heading>
-                  <Disclosure.Trigger className="w-full p-1 -mx-1 flex text-xs rounded-lg font-semibold uppercase tracking-wider text-accent-soft-foreground">
-                    {group.brand}
-                    <Disclosure.Indicator />
-                  </Disclosure.Trigger>
+                  <div className="px-4">
+                    <Disclosure.Trigger className="w-full p-1 -mx-1 flex text-xs rounded-lg font-semibold uppercase tracking-wider text-accent-soft-foreground">
+                      {group.brand}
+                      <Disclosure.Indicator />
+                    </Disclosure.Trigger>
+                  </div>
                 </Disclosure.Heading>
 
                 <Disclosure.Content>
-                  <Disclosure.Body className="flex flex-col">
+                  <Disclosure.Body className="flex flex-col px-1">
                     {group.platforms.map((platform) => (
                       <Link
                         key={platform.id}
                         to="/$platformId"
                         params={{ platformId: platform.id }}
                         className={cn(
-                          "button button--ghost focus-visible:ring-2 ring-accent ring-offset-2 ring-offset-background",
+                          "button button--ghost focus-visible:status-focused",
                           platformId === platform.id
                             ? "text-foreground"
                             : "text-muted",
-                          "w-full justify-start truncate",
+                          "w-full justify-start truncate tracking-wider",
                         )}
                       >
                         {platform.name}

@@ -21,11 +21,11 @@ function PlatformPage() {
           alt={platform.fullName}
           className="size-full object-cover"
         />
-        <div className="absolute inset-0 bg-linear-to-t from-background to-transparent via-25%" />
+        <div className="absolute inset-0 bg-linear-to-t from-background to-transparent" />
       </div>
 
-      <div className="relative z-10 p-4 flex flex-col gap-4">
-        <h1 className="text-base font-bold text-foreground bg-background p-2 px-3 self-start shadow-xl">
+      <div className="relative z-10 p-2 md:p-4 flex flex-col gap-4 md:gap-6">
+        <h1 className="text-lg md:text-xl font-semibold text-foreground bg-background p-2 px-3 self-start shadow-xl tracking-wider">
           {platform.name}
         </h1>
       </div>
