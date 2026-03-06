@@ -32,7 +32,7 @@ export default function NavBar() {
       <div className="flex items-center px-4 pt-4">
         <Link
           to="/"
-          className="link p-1 -m-1 no-underline focus-visible:status-focused text-lg font-bold gap-2.5 items-center"
+          className="link p-1 -m-1 no-underline focus-visible:status-focused text-base font-bold gap-2 items-center"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
