@@ -1,14 +1,56 @@
 import { Chip } from "@heroui/react"
-import { createFileRoute, Link, notFound } from "@tanstack/react-router"
+import { useQuery } from "@tanstack/react-query"
+import { createFileRoute, notFound } from "@tanstack/react-router"
+import { createServerFn } from "@tanstack/react-start"
+import { useMemo } from "react"
+import { GameTile } from "@/components/game-tile"
 import platforms from "@/data/platforms.json"
 
 export const Route = createFileRoute("/$platformId")({
   component: PlatformPage,
 })
 
+const gamesUrl = ""
+
+const getGames = createServerFn({
+  method: "GET",
+}).handler(async () => {
+  return fetch(gamesUrl).then((res) => res.text())
+})
+
+function parseFileNames(html: string): string[] {
+  const parser = new DOMParser()
+  const doc = parser.parseFromString(html, "text/html")
+  const links = doc.querySelectorAll("a")
+  return Array.from(links)
+    .map((a) => decodeURIComponent(a.getAttribute("href") ?? ""))
+    .filter(
+      (href) =>
+        href &&
+        !href.startsWith("/") &&
+        !href.startsWith("?") &&
+        !href.startsWith("http") &&
+        href !== "./" &&
+        href !== "../",
+    )
+}
+
 function PlatformPage() {
   const { platformId } = Route.useParams()
   const platform = platforms.find((p) => p.id === platformId)
+  const { data } = useQuery({
+    queryKey: ["games", platformId],
+    queryFn: () => getGames(),
+  })
+
+  const gameFiles = useMemo(() => (data ? parseFileNames(data) : []), [data])
+  const games = useMemo(
+    () =>
+      [...new Set(gameFiles.map((f) => f.split("(")[0].trim()))].slice(0, 12),
+    [gameFiles],
+  )
+
+  console.log({ games })
 
   if (!platform) {
     throw notFound()
@@ -25,47 +67,17 @@ function PlatformPage() {
         <div className="absolute inset-0 bg-linear-to-t from-background to-transparent" />
       </div>
 
-      <div className="relative z-10 p-2 md:p-4 flex flex-col gap-4 lg:gap-6">
-        <Chip className="w-fit shadow text-lg md:text-xl p-3 tracking-wider">
+      <div className="relative z-10 p-2 md:p-4 flex flex-col gap-4">
+        <Chip className="w-fit shadow text-lg font-semibold px-3 py-2 tracking-wider">
           {platform.name}
         </Chip>
 
         <Chip className="w-fit shadow md:text-sm p-2">Suggestions</Chip>
 
-        <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-          <Link
-            className="button button--ghost bg-overlay flex-col shadow w-full h-fit px-0 pb-2 overflow-hidden focus-visible:status-focused whitespace-normal"
-            to="/"
-          >
-            <div className="relative aspect-square w-full overflow-hidden bg-surface-secondary">
-              <img
-                alt="Pokemon Yellow"
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                src="https://cdn2.steamgriddb.com/thumb/ac02194dc429a88b406a7b5ffbd32db5.png"
-              />
-            </div>
-
-            <span className="text-xs px-2 md:px-3">
-              Pokemon - Yellow Version
-            </span>
-          </Link>
-
-          <Link
-            className="button button--ghost bg-overlay flex-col shadow w-full h-fit px-0 pb-2 overflow-hidden focus-visible:status-focused whitespace-normal"
-            to="/"
-          >
-            <div className="relative aspect-square w-full overflow-hidden bg-surface-secondary">
-              <img
-                alt="Pokemon Yellow"
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                src="https://cdn2.steamgriddb.com/thumb/ac02194dc429a88b406a7b5ffbd32db5.png"
-              />
-            </div>
-
-            <span className="text-xs px-2 md:px-3">
-              Pokemon - Yellow Version
-            </span>
-          </Link>
+        <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+          {games.map((name) => (
+            <GameTile key={name} name={name} />
+          ))}
         </div>
       </div>
     </div>

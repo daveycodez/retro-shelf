@@ -89,7 +89,7 @@ function Settings() {
           <Form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <TextField
               fullWidth
-              key="ra-username"
+              key={`ra-username-${settings.raUsername}`}
               name="ra-username"
               defaultValue={settings.raUsername}
               onChange={() => setIsDirty(true)}
@@ -105,7 +105,7 @@ function Settings() {
 
             <TextField
               fullWidth
-              key="ra-api-key"
+              key={`ra-api-key-${settings.raApiKey}`}
               name="ra-api-key"
               defaultValue={settings.raApiKey}
               onChange={() => setIsDirty(true)}
@@ -165,7 +165,7 @@ function Settings() {
           <Form onSubmit={handleSgdbSubmit} className="flex flex-col gap-4">
             <TextField
               fullWidth
-              key="sgdb-api-key"
+              key={`sgdb-api-key-${settings.steamGridDBAPIKey}`}
               name="sgdb-api-key"
               defaultValue={settings.steamGridDBAPIKey}
               onChange={() => setIsSgdbDirty(true)}
@@ -258,7 +258,9 @@ function Settings() {
                   </Switch>
                 </Card.Header>
 
-                <Disclosure isExpanded={platformSettings[platform.id]?.enabled}>
+                <Disclosure
+                  isExpanded={!!platformSettings[platform.id]?.enabled}
+                >
                   <Disclosure.Content>
                     <Disclosure.Body className="mt-2">
                       <Form
