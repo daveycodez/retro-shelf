@@ -11,12 +11,7 @@ import {
   TextField,
 } from "@heroui/react"
 import { createFileRoute, useHydrated } from "@tanstack/react-router"
-import {
-  type FormEvent,
-  type SubmitEvent,
-  type SyntheticEvent,
-  useState,
-} from "react"
+import { type SyntheticEvent, useState } from "react"
 import platforms from "@/data/platforms.json"
 import { setPlatformSettings, setSettings, useSettings } from "@/lib/settings"
 
@@ -35,7 +30,7 @@ function Settings() {
   )
   const hydrated = useHydrated()
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: SyntheticEvent) {
     e.preventDefault()
 
     const formData = new FormData(e.target as HTMLFormElement)
@@ -60,10 +55,7 @@ function Settings() {
     setIsSgdbDirty(false)
   }
 
-  function handlePlatformSubmit(
-    platformId: string,
-    e: SubmitEvent<HTMLFormElement>,
-  ) {
+  function handlePlatformSubmit(platformId: string, e: SyntheticEvent) {
     e.preventDefault()
 
     const formData = new FormData(e.target as HTMLFormElement)
@@ -269,12 +261,7 @@ function Settings() {
                   <Disclosure.Content>
                     <Disclosure.Body className="mt-2">
                       <Form
-                        onSubmit={(e) =>
-                          handlePlatformSubmit(
-                            platform.id,
-                            e as SubmitEvent<HTMLFormElement>,
-                          )
-                        }
+                        onSubmit={(e) => handlePlatformSubmit(platform.id, e)}
                         className="flex flex-col gap-4"
                       >
                         <TextField
