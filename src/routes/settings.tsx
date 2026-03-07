@@ -11,7 +11,12 @@ import {
   TextField,
 } from "@heroui/react"
 import { createFileRoute, useHydrated } from "@tanstack/react-router"
-import { type FormEvent, useState } from "react"
+import {
+  type FormEvent,
+  type SubmitEvent,
+  type SyntheticEvent,
+  useState,
+} from "react"
 import platforms from "@/data/platforms.json"
 import { setPlatformSettings, setSettings, useSettings } from "@/lib/settings"
 
@@ -43,7 +48,7 @@ function Settings() {
     setIsDirty(false)
   }
 
-  function handleSgdbSubmit(e: FormEvent<HTMLFormElement>) {
+  function handleSgdbSubmit(e: SyntheticEvent) {
     e.preventDefault()
 
     const formData = new FormData(e.target as HTMLFormElement)
@@ -57,7 +62,7 @@ function Settings() {
 
   function handlePlatformSubmit(
     platformId: string,
-    e: FormEvent<HTMLFormElement>,
+    e: SubmitEvent<HTMLFormElement>,
   ) {
     e.preventDefault()
 
@@ -72,10 +77,10 @@ function Settings() {
   }
 
   return (
-    <div className="flex flex-col p-4 md:p-6 gap-4 md:gap-6">
-      <h1 className="text-xl md:text-2xl font-bold">Settings</h1>
+    <div className="flex flex-col p-4 lg:px-6 lg:pb-6 gap-4">
+      <h1 className="text-xl font-bold">Settings</h1>
 
-      <Card className="md:p-6">
+      <Card className="md:p-6 hidden">
         <Card.Header className="gap-1">
           <Card.Title className="text-lg">RetroAchievements</Card.Title>
 
@@ -211,7 +216,7 @@ function Settings() {
         </Card.Content>
       </Card>
 
-      <h2 className="text-lg font-semibold">Platforms</h2>
+      <h2 className="text-xl font-semibold">Platforms</h2>
 
       {Object.entries(
         platforms.reduce<Record<string, typeof platforms>>(
@@ -224,9 +229,9 @@ function Settings() {
         ),
       ).map(([brand, brandPlatforms]) => (
         <div key={brand}>
-          <h3 className="text-lg font-semibold mb-3">{brand}</h3>
+          <h3 className="text-base font-medium mb-3">{brand}</h3>
 
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-4">
             {brandPlatforms.map((platform) => (
               <Card key={platform.id} className="gap-0">
                 <Card.Header className="flex flex-row justify-between items-center">
@@ -264,10 +269,16 @@ function Settings() {
                   <Disclosure.Content>
                     <Disclosure.Body className="mt-2">
                       <Form
-                        onSubmit={(e) => handlePlatformSubmit(platform.id, e)}
+                        onSubmit={(e) =>
+                          handlePlatformSubmit(
+                            platform.id,
+                            e as SubmitEvent<HTMLFormElement>,
+                          )
+                        }
                         className="flex flex-col gap-4"
                       >
                         <TextField
+                          className="hidden"
                           fullWidth
                           name="local-folder"
                           defaultValue={

@@ -1,6 +1,6 @@
 import { Gear, Magnifier } from "@gravity-ui/icons"
 import { Button, cn, Disclosure, ScrollShadow } from "@heroui/react"
-import { Link, useParams } from "@tanstack/react-router"
+import { Link, useHydrated, useParams } from "@tanstack/react-router"
 import { useMemo } from "react"
 import platforms from "@/data/platforms.json"
 import { useSettings } from "@/lib/settings"
@@ -9,6 +9,7 @@ import { ModeToggle } from "./mode-toggle"
 export default function NavBar() {
   const { platformSettings } = useSettings()
   const { platformId } = useParams({ strict: false })
+  const hydrated = useHydrated()
 
   const enabledGroups = useMemo(() => {
     const enabledPlatforms = platforms.filter(
@@ -94,9 +95,11 @@ export default function NavBar() {
             ))}
           </>
         ) : (
-          <p className="px-3 py-4 text-sm text-muted">
-            No platforms enabled. Enable platforms in Settings.
-          </p>
+          hydrated && (
+            <p className="px-3 py-4 text-sm text-muted">
+              No platforms enabled. Enable platforms in Settings.
+            </p>
+          )
         )}
       </ScrollShadow>
 
