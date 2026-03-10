@@ -56,6 +56,7 @@ export function GameTile({ name, image }: { name: string; image?: string }) {
     queryKey: ["game", name],
     queryFn: () => searchGame({ data: { apiKey: steamGridDBAPIKey, name } }),
     enabled: !!steamGridDBAPIKey,
+    staleTime: 1000 * 60 * 60 * 24, // 24 hours
   })
 
   const { data: icon } = useQuery({
@@ -63,6 +64,7 @@ export function GameTile({ name, image }: { name: string; image?: string }) {
     queryFn: () =>
       getGameIcon({ data: { apiKey: steamGridDBAPIKey, id: data?.id ?? 0 } }),
     enabled: !!data?.id && !!steamGridDBAPIKey,
+    staleTime: 1000 * 60 * 60 * 24, // 24 hours
   })
 
   console.log({ data })
@@ -96,8 +98,8 @@ export function GameTile({ name, image }: { name: string; image?: string }) {
     return () => ro.disconnect()
   }, [name])
 
-  const gap = 32
-  const speed = 32
+  const gap = 40
+  const speed = 30
   const duration = marquee.active ? (marquee.width + gap) / speed : 0
 
   return (
