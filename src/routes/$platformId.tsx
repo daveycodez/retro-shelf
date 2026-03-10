@@ -5,18 +5,21 @@ import { createServerFn } from "@tanstack/react-start"
 import { useMemo } from "react"
 import { GameTile } from "@/components/game-tile"
 import platforms from "@/data/platforms.json"
+import { useSettings } from "@/lib/settings"
 
 export const Route = createFileRoute("/$platformId")({
   component: PlatformPage,
 })
 
-const gamesUrl = ""
-
 const getGames = createServerFn({
   method: "GET",
-}).handler(async () => {
-  return fetch(gamesUrl).then((res) => res.text())
 })
+  .inputValidator(({ remoteFolder }: { remoteFolder: string }) => ({
+    remoteFolder,
+  }))
+  .handler(async ({ data: { remoteFolder } }) => {
+    return fetch(remoteFolder).then((res) => res.text())
+  })
 
 function parseFileNames(html: string): string[] {
   const parser = new DOMParser()
@@ -37,10 +40,17 @@ function parseFileNames(html: string): string[] {
 
 function PlatformPage() {
   const { platformId } = Route.useParams()
+  const { platformSettings } = useSettings()
+
   const platform = platforms.find((p) => p.id === platformId)
   const { data } = useQuery({
     queryKey: ["games", platformId],
-    queryFn: () => getGames(),
+    queryFn: () =>
+      getGames({
+        data: {
+          remoteFolder: platformSettings[platformId]?.remoteFolder ?? "",
+        },
+      }),
   })
 
   const gameFiles = useMemo(() => (data ? parseFileNames(data) : []), [data])

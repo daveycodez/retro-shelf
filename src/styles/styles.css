@@ -6,3 +6,9 @@ html,
 body {
   @apply bg-background text-foreground;
 }
+
+@keyframes marquee {
+  to {
+    transform: translateX(var(--marquee-translate));
+  }
+}

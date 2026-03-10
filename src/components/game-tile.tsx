@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { Link } from "@tanstack/react-router"
 import { createServerFn } from "@tanstack/react-start"
+import { type CSSProperties, useEffect, useRef, useState } from "react"
 import SGDB from "steamgriddb"
 import { useSettings } from "@/lib/settings"
 
@@ -67,6 +68,38 @@ export function GameTile({ name, image }: { name: string; image?: string }) {
   console.log({ data })
   console.log({ icon })
 
+  const containerRef = useRef<HTMLDivElement>(null)
+  const textRef = useRef<HTMLSpanElement>(null)
+  const [marquee, setMarquee] = useState({ active: false, width: 0 })
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: re-measure when name changes
+  useEffect(() => {
+    const container = containerRef.current
+    const text = textRef.current
+    if (!container || !text) return
+
+    const measure = () => {
+      const style = getComputedStyle(container)
+      const innerWidth =
+        container.clientWidth -
+        parseFloat(style.paddingLeft) -
+        parseFloat(style.paddingRight)
+      setMarquee({
+        active: text.offsetWidth > innerWidth,
+        width: text.offsetWidth,
+      })
+    }
+
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(container)
+    return () => ro.disconnect()
+  }, [name])
+
+  const gap = 32
+  const speed = 32
+  const duration = marquee.active ? (marquee.width + gap) / speed : 0
+
   return (
     <Link
       className="button button--ghost bg-overlay flex-col shadow w-full h-fit px-0 pb-2 overflow-hidden focus-visible:status-focused whitespace-normal"
@@ -82,7 +115,35 @@ export function GameTile({ name, image }: { name: string; image?: string }) {
         )}
       </div>
 
-      <span className="text-xs px-2 md:px-3 text-center">{name}</span>
+      <div
+        ref={containerRef}
+        className={`w-full overflow-hidden px-2 md:px-3 ${!marquee.active ? "text-center" : ""}`}
+      >
+        <div
+          className="inline-flex"
+          style={
+            marquee.active
+              ? ({
+                  gap: `${gap}px`,
+                  "--marquee-translate": `${-(marquee.width + gap)}px`,
+                  animation: `marquee ${duration}s linear infinite`,
+                } as CSSProperties)
+              : undefined
+          }
+        >
+          <span ref={textRef} className="text-xs whitespace-nowrap shrink-0">
+            {name}
+          </span>
+          {marquee.active && (
+            <span
+              className="text-xs whitespace-nowrap shrink-0"
+              aria-hidden="true"
+            >
+              {name}
+            </span>
+          )}
+        </div>
+      </div>
     </Link>
   )
 }
